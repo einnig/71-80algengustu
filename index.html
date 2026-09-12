@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Æfing 71 - 80 algengustu orðin í íslenskum námsbókum</title>
+    <title>Markorð 71 - 80</title>
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -49,6 +49,27 @@
             transition: width 0.5s ease-in-out;
         }
         
+        #counter { font-size: 1.2em; color: #666; font-weight: bold; margin-bottom: 10px; }
+
+        .lang-selector {
+            margin-bottom: 20px;
+            background: #fff3e0;
+            padding: 10px 15px;
+            border-radius: 10px;
+            display: inline-block;
+            border: 1px solid #ffcc80;
+        }
+
+        .lang-selector select {
+            padding: 8px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            margin-left: 10px;
+            max-width: 300px;
+        }
+        
         #target { 
             font-size: 4em; 
             margin: 10px 0; 
@@ -57,7 +78,7 @@
         }
         
         #is-explanation {
-            font-size: 1.3em;
+            font-size: 1.2em;
             color: #333;
             background-color: #e8f0fe;
             padding: 15px 25px;
@@ -66,6 +87,7 @@
             margin-bottom: 20px;
             max-width: 80%;
             line-height: 1.6;
+            text-align: left;
         }
 
         .btn { 
@@ -91,17 +113,17 @@
         }
 
         #media-box { 
-            font-size: 1.05em; 
+            font-size: 1.1em; 
             color: #444; 
             text-align: left; 
             background: #f8fbff; 
             padding: 15px 30px; 
             border-radius: 12px; 
-            line-height: 1.8; 
+            line-height: 1.6; 
             border-left: 6px solid #1a73e8; 
             margin-top: 15px;
             display: inline-block;
-            min-width: 60%;
+            min-width: 70%;
         }
         #spoken {
             margin-top: 15px; 
@@ -116,7 +138,6 @@
             color: #1a73e8;
         }
         .nav-btns { margin-top: 20px; }
-        #counter { font-size: 1.2em; color: #666; font-weight: bold; margin-bottom: 10px; }
         
         /* Fyrir nafnainnslátt */
         #studentName {
@@ -129,15 +150,55 @@
             border-radius: 8px;
             text-align: center;
         }
+
+        .feedback-note {
+            margin-top: 40px;
+            font-size: 0.95em;
+            color: #555;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .feedback-note a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .feedback-note a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
 <div class="container" id="app">
-    <h1>Æfing 71 - 80 algengustu orðin í íslenskum námsbókum</h1>
+    <h1>Markorð 71 - 80</h1>
     
     <div class="progress-container">
         <div id="progress-bar"></div>
+    </div>
+
+    <div class="lang-selector">
+        <label for="languageSelect"><b>🌍 Veldu tungumál:</b></label>
+        <select id="languageSelect" onchange="updateUI()">
+            <option value="ar">Arabíska – العربية</option>
+            <option value="da">Danska – Dansk</option>
+            <option value="en" selected>Enska – English</option>
+            <option value="tl">Filippseyska – Tagalog / Filipino</option>
+            <option value="fr">Franska – Français</option>
+            <option value="lv">Lettneska – Latviešu</option>
+            <option value="lt">Litháíska – Lietuvių</option>
+            <option value="no">Norska – Norsk</option>
+            <option value="fa">Persneska – فارسی</option>
+            <option value="pt">Portúgalska – Português</option>
+            <option value="pl">Pólska – Polski</option>
+            <option value="ro">Rúmenska – Română</option>
+            <option value="ru">Rússneska – Русский</option>
+            <option value="es">Spænska – Español</option>
+            <option value="sv">Sænska – Svenska</option>
+            <option value="th">Tælenska – ภาษาไทย</option>
+            <option value="uk">Úkraínska – Українська</option>
+            <option value="vi">Víetnamska – Tiếng Việt</option>
+        </select>
     </div>
 
     <div id="counter"></div>
@@ -156,169 +217,253 @@
         <button class="btn" style="background-color: #5f6368;" onclick="prevExercise()">⬅️ Fyrri</button>
         <button class="btn" style="background-color: #5f6368;" onclick="nextExercise()">Næsta ➡️</button>
     </div>
+
+    <div class="feedback-note">
+        Vinsamlegast sendið ábendingar á <a href="mailto:dgu@fb.is">dgu@fb.is</a>
+    </div>
 </div>
 
 <script>
 const exerciseData = [
     { 
         text: "verður", 
-        is_exp: "<b>Útskýring:</b> Sagnorðið „að verða“ í nútíð (eða framtíð). Þýðir að eitthvað eigi eftir að gerast, breytast eða eitthvað sé skylt að gera.<br><b>Dæmi:</b> Þetta <b>verður</b> mjög gaman.",
-        translations: "<b>Enska (English):</b> Explanation: The verb 'to become' or 'will be' (future). Example: This <b>will be</b> very fun.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Czasownik 'zostać' lub 'będzie' (przyszłość). Przykład: To <b>będzie</b> świetna zabawa.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Verbo 'llegar a ser' o 'será' (futuro). Ejemplo: Esto <b>será</b> muy divertido.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Động từ 'trở thành' hoặc 'sẽ là'. Ví dụ: Điều này <b>sẽ</b> rất vui.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: فعل 'يصبح' أو 'سيكون'. مثال: هذا <b>سيكون</b> ممتعاً جداً.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Глагол 'стать' или 'будет' (будущее). Пример: Это <b>будет</b> очень весело.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Дієслово 'стати' або 'буде'. Приклад: Це <b>буде</b> дуже весело.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: فعل «شدن» یا «خواهد بود». مثال: این خیلی سرگرم‌کننده <b>خواهد بود</b>.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: กริยาแปลว่า 'จะเป็น' หรือ 'กลายเป็น'. ตัวอย่าง: นี่<b>จะ</b>สนุกมาก<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: O verbo 'tornar-se' ou 'será' (futuro). Exemplo: Isso <b>será</b> muito divertido.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：动词“变成”或“将会”。 例句：这<b>将会</b>很有趣。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Darbības vārds 'kļūt' vai 'būs' (nākotne). Piemērs: Tas <b>būs</b> ļoti jautri."
+        is_exp: "<b>Útskýring:</b> Sögnin „að verða“ í framtíð eða til að lýsa breytingu.<br><b>Samheiti:</b> á eftir að vera, hlýtur.<br><b>Dæmi:</b> Þetta <b>verður</b> mjög gaman.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: الفعل 'يصبح' أو 'سيكون' في المستقبل.<br><b>مرادف:</b> سيكون.<br>مثال: هذا <b>سيكون</b> ممتعاً جداً.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Udsagnsordet 'at blive' i fremtid eller for at beskrive forandring.<br><b>Synonym:</b> kommer til at være.<br>Eksempel: Dette <b>bliver</b> meget sjovt.",
+            "en": "<b>Enska (English):</b> Explanation: The verb 'to become' or 'will be' (future).<br><b>Synonym:</b> will be.<br>Example: This <b>will be</b> very fun.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Pandiwang 'maging' o 'mangyayari' sa hinaharap.<br><b>Kasingkahulugan:</b> magiging.<br>Halimbawa: Ito ay <b>magiging</b> napakasaya.",
+            "fr": "<b>Franska (Français):</b> Explication: Le verbe 'devenir' ou 'sera' (futur).<br><b>Synonyme:</b> sera, va être.<br>Exemple: Ce <b>sera</b> très amusant.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Darbības vārds 'kļūt' vai 'būs' (nākotne).<br><b>Sinonīms:</b> būs.<br>Piemērs: Tas <b>būs</b> ļoti jautri.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Veiksmažodis 'tapti' arba 'bus' ateityje.<br><b>Sinonimas:</b> bus.<br>Pavyzdys: Tai <b>bus</b> labai smagu.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Verbet 'å bli' i fremtid eller for å beskrive en endring.<br><b>Synonym:</b> kommer til å være.<br>Eksempel: Dette <b>blir</b> veldig gøy.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: فعل «شدن» یا «خواهد بود» در زمان آینده.<br><b>مترادف:</b> خواهد بود.<br>مثال: این بسیار جالب <b>خواهد بود</b>.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: O verbo 'tornar-se' ou 'será' no futuro.<br><b>Sinônimo:</b> vai ser.<br>Exemplo: Isso <b>será</b> muito divertido.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Czasownik 'zostać' lub 'będzie' (przyszłość).<br><b>Synonim:</b> będzie.<br>Przykład: To <b>będzie</b> świetna zabawa.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Verbul 'a deveni' sau 'va fi' (viitor).<br><b>Sinonim:</b> va fi.<br>Exemplu: Acest lucru <b>va fi</b> foarte distractiv.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Глагол 'стать' или 'будет' (будущее время).<br><b>Синоним:</b> будет.<br>Пример: Это <b>будет</b> очень весело.",
+            "es": "<b>Spænska (Español):</b> Explicación: El verbo 'convertirse' o 'será' en el futuro.<br><b>Sinónimo:</b> va a ser, será.<br>Ejemplo: Esto <b>será</b> muy divertido.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Verbet 'att bli' i framtid eller för att beskriva en förändring.<br><b>Synonym:</b> kommer att vara.<br>Exempel: Detta <b>blir</b> mycket roligt.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: กริยา 'จะกลายเป็น' หรือ 'จะเป็น' (อนาคต)<br><b>คำพ้องความหมาย:</b> จะเป็น<br>ตัวอย่าง: นี่<b>จะ</b>สนุกมาก",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Дієслово 'стати' або 'буде' (майбутній час).<br><b>Синонім:</b> буде.<br>Приклад: Це <b>буде</b> дуже весело.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Động từ 'trở thành' hoặc 'sẽ là' (tương lai).<br><b>Từ đồng nghĩa:</b> sẽ là.<br>Ví dụ: Điều này <b>sẽ</b> rất vui."
+        }
     },
     { 
         text: "mjög", 
-        is_exp: "<b>Útskýring:</b> Atviksorð sem gefur aukna áherslu og stækkar merkingu annarra orða (í miklum mæli).<br><b>Dæmi:</b> Hún er <b>mjög</b> glöð í dag.",
-        translations: "<b>Enska (English):</b> Explanation: Adverb for emphasis, meaning 'very'. Example: She is <b>very</b> happy today.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Przysłówek wzmacniający, oznaczający 'bardzo'. Przykład: Ona jest dzisiaj <b>bardzo</b> szczęśliwa.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Adverbio de énfasis, significa 'muy'. Ejemplo: Ella está <b>muy</b> feliz hoy.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Trạng từ nhấn mạnh, nghĩa là 'rất'. Ví dụ: Hôm nay cô ấy <b>rất</b> vui.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: ظرف للتوكيد يعني 'جداً'. مثال: هي سعيدة <b>جداً</b> اليوم.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Наречие для усиления, означает 'очень'. Пример: Она сегодня <b>очень</b> рада.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Прислівник для підсилення, означає 'дуже'. Приклад: Вона сьогодні <b>дуже</b> щаслива.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: قید تاکیدی به معنی «خیلی» یا «بسیار». مثال: او امروز <b>خیلی</b> خوشحال است.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: กริยาวิเศษณ์ แปลว่า 'มาก'. ตัวอย่าง: วันนี้เธอมีความสุข<b>มาก</b><br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Advérbio de ênfase, significa 'muito'. Exemplo: Ela está <b>muito</b> feliz hoje.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：表示强调的副词，意思是“非常/很”。 例句：她今天<b>非常</b>高兴。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Apstākļa vārds, kas nozīmē 'ļoti'. Piemērs: Viņa šodien ir <b>ļoti</b> priecīga."
+        is_exp: "<b>Útskýring:</b> Atviksorð sem gefur aukna áherslu og stækkar merkingu annarra orða.<br><b>Samheiti:</b> afar, gríðarlega, rosalega.<br><b>Dæmi:</b> Hún er <b>mjög</b> glöð í dag.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: ظرف يعطي تأكيداً أكبر للكلمات.<br><b>مرادف:</b> للغاية، بشدة.<br>مثال: هي سعيدة <b>جداً</b> اليوم.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Et biord, der giver ekstra vægt til andre ord.<br><b>Synonym:</b> yderst, utrolig.<br>Eksempel: Hun er <b>meget</b> glad i dag.",
+            "en": "<b>Enska (English):</b> Explanation: Adverb that gives extra emphasis to other words.<br><b>Synonym:</b> extremely, really.<br>Example: She is <b>very</b> happy today.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Pang-abay na nagpapabigat sa kahulugan ng ibang salita.<br><b>Kasingkahulugan:</b> sobra, talaga.<br>Halimbawa: Siya ay <b>napakasaya</b> ngayon.",
+            "fr": "<b>Franska (Français):</b> Explication: Adverbe qui donne plus d'intensité à d'autres mots.<br><b>Synonyme:</b> extrêmement, vraiment.<br>Exemple: Elle est <b>très</b> heureuse aujourd'hui.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Apstākļa vārds, kas dod papildu uzsvaru citiem vārdiem.<br><b>Sinonīms:</b> ārkārtīgi, stipri.<br>Piemērs: Viņa šodien ir <b>ļoti</b> priecīga.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Prievezmis, suteikiantis papildomą pabrėžimą kitiems žodžiams.<br><b>Sinonimas:</b> be galo, itin.<br>Pavyzdys: Ji šiandien <b>labai</b> laiminga.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Adverb som gir ekstra vekt til andre ord.<br><b>Synonym:</b> uhyre, utrolig.<br>Eksempel: Hun er <b>veldig</b> glad i dag.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: قیدی که برای تأکید بیشتر استفاده می‌شود.<br><b>مترادف:</b> بی‌نهایت، واقعاً.<br>مثال: او امروز <b>خیلی</b> خوشحال است.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Advérbio que dá ênfase extra a outras palavras.<br><b>Sinônimo:</b> extremamente, bastante.<br>Exemplo: Ela está <b>muito</b> feliz hoje.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Przysłówek, który daje dodatkowy nacisk na inne słowa.<br><b>Synonim:</b> niezwykle, wyjątkowo.<br>Przykład: Ona jest dzisiaj <b>bardzo</b> szczęśliwa.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Adverb care dă un accent suplimentar altor cuvinte.<br><b>Sinonim:</b> extrem de, cu adevărat.<br>Exemplu: Ea este <b>foarte</b> fericită astăzi.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Наречие, которое усиливает значение других слов.<br><b>Синоним:</b> крайне, чрезвычайно.<br>Пример: Она сегодня <b>очень</b> рада.",
+            "es": "<b>Spænska (Español):</b> Explicación: Adverbio que da énfasis extra a otras palabras.<br><b>Sinónimo:</b> extremadamente, realmente.<br>Ejemplo: Ella está <b>muy</b> feliz hoy.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Adverb som ger extra betoning till andra ord.<br><b>Synonym:</b> ytterst, oerhört.<br>Exempel: Hon är <b>mycket</b> glad i dag.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: กริยาวิเศษณ์ที่เน้นย้ำคำอื่นๆ<br><b>คำพ้องความหมาย:</b> อย่างยิ่ง, มากๆ<br>ตัวอย่าง: วันนี้เธอมีความสุข<b>มาก</b>",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Прислівник, що підсилює значення інших слів.<br><b>Синонім:</b> вкрай, надзвичайно.<br>Приклад: Вона сьогодні <b>дуже</b> щаслива.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Trạng từ tạo sự nhấn mạnh cho các từ khác.<br><b>Từ đồng nghĩa:</b> vô cùng, cực kỳ.<br>Ví dụ: Hôm nay cô ấy <b>rất</b> vui."
+        }
     },
     { 
         text: "væri", 
-        is_exp: "<b>Útskýring:</b> Sagnorðið „að vera“ í viðtengingarhætti þátíðar. Oft notað þegar talað er um eitthvað sem gæti gerst eða manni dreymir um.<br><b>Dæmi:</b> Það <b>væri</b> fínt að fá ís.",
-        translations: "<b>Enska (English):</b> Explanation: Subjunctive past of 'to be' (would be). Example: It <b>would be</b> nice to get ice cream.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Tryb przypuszczający 'być' (byłoby). Przykład: <b>Byłoby</b> miło dostać lody.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Condicional/subjuntivo del verbo ser (sería). Ejemplo: <b>Sería</b> bueno tomar un helado.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Động từ 'to be' ở điều kiện cách (sẽ là). Ví dụ: <b>Sẽ</b> rất tuyệt nếu có kem.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: صيغة الشرط/التمني للفعل يكون (سيكون / ليت). مثال: <b>سيكون</b> من الرائع الحصول على آيس كريم.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Сослагательное наклонение глагола 'быть' (было бы). Пример: <b>Было бы</b> здорово поесть мороженого.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Умовний спосіб дієслова 'бути' (було б). Приклад: <b>Було б</b> добре з'їсти морозива.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: فعل شرطی «بودن» (می‌شد / خوب بود). مثال: <b>خوب بود</b> اگر بستنی می‌خوردیم.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: รูปประโยคสมมติ (จะดีถ้า). ตัวอย่าง: <b>น่าจะ</b>ดีถ้าได้กินไอศกรีม<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Condicional do verbo ser (seria). Exemplo: <b>Seria</b> bom tomar um sorvete.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：虚拟语气，意思是“（如果）会是”。 例句：如果有冰淇淋吃就太好<b>了</b>。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Darbības vārda 'būt' vēlējuma izteiksme (būtu). Piemērs: <b>Būtu</b> jauki dabūt saldējumu."
+        is_exp: "<b>Útskýring:</b> Sögnin „að vera“ í viðtengingarhætti þátíðar. Notað um eitthvað sem gæti gerst eða maður óskar sér.<br><b>Andheiti:</b> er (í raun og veru).<br><b>Dæmi:</b> Það <b>væri</b> fínt að fá ís.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: صيغة الشرط/التمني للفعل 'يكون'.<br><b>مضاد:</b> هو (في الواقع).<br>مثال: <b>سيكون</b> من الرائع الحصول على آيس كريم.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: 'At være' i konjunktiv. Bruges om noget man ønsker eller som kunne ske.<br><b>Antonym:</b> er (faktisk).<br>Eksempel: Det <b>ville være</b> dejligt med en is.",
+            "en": "<b>Enska (English):</b> Explanation: Subjunctive past of 'to be'. Used for wishes or things that could happen.<br><b>Antonym:</b> is (in reality).<br>Example: It <b>would be</b> nice to get ice cream.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Subjunctive form ng 'to be'. Ginagamit sa paghiling.<br><b>Kasalungat:</b> ay (sa totoo lang).<br>Halimbawa: <b>Maging</b> masarap sana kung may ice cream.",
+            "fr": "<b>Franska (Français):</b> Explication: Le verbe 'être' au conditionnel/subjonctif. Utilisé pour les souhaits ou les possibilités.<br><b>Antonyme:</b> est (en réalité).<br>Exemple: Ce <b>serait</b> bien d'avoir une glace.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: 'Būt' vēlējuma izteiksmē. Lieto vēlmēm vai iespējām.<br><b>Antonīms:</b> ir (īstenībā).<br>Piemērs: <b>Būtu</b> jauki dabūt saldējumu.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: 'Būti' tariamojoje nuosakoje. Naudojamas norams arba galimybėms.<br><b>Antonimas:</b> yra (realybėje).<br>Pavyzdys: <b>Būtų</b> puiku gauti ledų.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: 'Å være' i konjunktiv. Brukes om noe man ønsker eller noe som kan skje.<br><b>Antonym:</b> er (faktisk).<br>Eksempel: Det <b>hadde vært</b> fint med is.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: وجه التزامی/شرطی «بودن». برای آرزو یا احتمال.<br><b>متضاد:</b> است (در واقعیت).<br>مثال: <b>خوب می‌شد</b> اگر بستنی داشتیم.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Condicional/subjuntivo de 'ser/estar'. Usado para desejos ou possibilidades.<br><b>Antônimo:</b> é (na realidade).<br>Exemplo: <b>Seria</b> legal tomar um sorvete.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Tryb przypuszczający 'być'. Używany do życzeń lub możliwości.<br><b>Antonim:</b> jest (w rzeczywistości).<br>Przykład: <b>Byłoby</b> miło dostać lody.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Condiționalul verbului 'a fi'. Folosit pentru dorințe sau posibilități.<br><b>Antonim:</b> este (în realitate).<br>Exemplu: <b>Ar fi</b> frumos să primim înghețată.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Сослагательное наклонение глагола 'быть'. Используется для желаний или вероятностей.<br><b>Антоним:</b> есть (в реальности).<br>Пример: <b>Было бы</b> здорово получить мороженое.",
+            "es": "<b>Spænska (Español):</b> Explicación: Condicional/subjuntivo de 'ser'. Usado para deseos o cosas que podrían pasar.<br><b>Antónimo:</b> es (en realidad).<br>Ejemplo: <b>Sería</b> bueno tomar un helado.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: 'Att vara' i konjunktiv. Används om något man önskar eller som kan hända.<br><b>Antonym:</b> är (i verkligheten).<br>Exempel: Det <b>vore</b> trevligt med glass.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: รูปสมมติของ 'เป็น/อยู่/คือ' ใช้สำหรับความปรารถนา<br><b>คำตรงข้าม:</b> เป็น (ในความเป็นจริง)<br>ตัวอย่าง: <b>น่าจะดี</b>ถ้าได้กินไอศกรีม",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Умовний спосіб дієслова 'бути'. Використовується для бажань або ймовірностей.<br><b>Антонім:</b> є (насправді).<br>Приклад: <b>Було б</b> чудово отримати морозиво.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Thể giả định của động từ 'to be'. Dùng cho điều ước hoặc khả năng.<br><b>Từ trái nghĩa:</b> là (thực tế).<br>Ví dụ: <b>Sẽ rất</b> tuyệt nếu có kem."
+        }
     },
     { 
         text: "geta", 
-        is_exp: "<b>Útskýring:</b> Sagnorðið „að geta“ (í fleirtölu nútíðar eða nafnhætti). Þýðir að hafa hæfileika, kunnáttu eða leyfi til að gera eitthvað.<br><b>Dæmi:</b> Börn <b>geta</b> hlaupið hratt.",
-        translations: "<b>Enska (English):</b> Explanation: The verb 'to be able to' / 'can'. Example: Children <b>can</b> run fast.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Czasownik 'móc / potrafić'. Przykład: Dzieci <b>mogą / potrafią</b> biegać szybko.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Verbo 'poder' (habilidad). Ejemplo: Los niños <b>pueden</b> correr rápido.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Động từ 'có thể' (khả năng). Ví dụ: Trẻ em <b>có thể</b> chạy nhanh.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: فعل يفيد القدرة (يستطيعون / يمكنهم). مثال: الأطفال <b>يستطيعون</b> الجري بسرعة.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Глагол 'мочь / уметь'. Пример: Дети <b>могут</b> бегать быстро.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Дієслово 'могти / вміти'. Приклад: Діти <b>можуть</b> бігати швидко.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: فعل «توانستن». مثال: کودکان <b>می‌توانند</b> تند بدوند.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: กริยาแปลว่า 'สามารถ'. ตัวอย่าง: เด็กๆ <b>สามารถ</b>วิ่งได้เร็ว<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Verbo 'poder / conseguir'. Exemplo: As crianças <b>podem</b> correr rápido.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：动词“能够/可以”。 例句：孩子们<b>能</b>跑得很快。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Darbības vārds 'spēt' / 'varēt'. Piemērs: Bērni <b>var</b> skriet ātri."
+        is_exp: "<b>Útskýring:</b> Sögnin „að geta“ í nafnhætti eða fleirtölu. Að hafa hæfileika eða leyfi til að gera eitthvað.<br><b>Samheiti:</b> vera fær um, kunna.<br><b>Dæmi:</b> Börn <b>geta</b> hlaupið hratt.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: القدرة أو الحصول على الإذن لفعل شيء.<br><b>مرادف:</b> يمتلك القدرة.<br>مثال: الأطفال <b>يستطيعون</b> الجري بسرعة.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: At have evnen eller tilladelsen til at gøre noget.<br><b>Synonym:</b> være i stand til.<br>Eksempel: Børn <b>kan</b> løbe hurtigt.",
+            "en": "<b>Enska (English):</b> Explanation: To have the ability or permission to do something.<br><b>Synonym:</b> be able to.<br>Example: Children <b>can</b> run fast.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: May kakayahan o pahintulot na gawin ang isang bagay.<br><b>Kasingkahulugan:</b> may kakayahan.<br>Halimbawa: <b>Kaya</b> ng mga bata na tumakbo ng mabilis.",
+            "fr": "<b>Franska (Français):</b> Explication: Avoir la capacité ou la permission de faire quelque chose.<br><b>Synonyme:</b> être capable de.<br>Exemple: Les enfants <b>peuvent</b> courir vite.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Būt spējīgam vai ar atļauju kaut ko darīt.<br><b>Sinonīms:</b> spēt.<br>Piemērs: Bērni <b>var</b> skriet ātri.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Turėti gebėjimą ar leidimą kažką daryti.<br><b>Sinonimas:</b> sugebėti.<br>Pavyzdys: Vaikai <b>gali</b> bėgti greitai.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Å ha evnen eller tillatelsen til å gjøre noe.<br><b>Synonym:</b> være i stand til.<br>Eksempel: Barn <b>kan</b> løpe fort.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: داشتن توانایی یا اجازه برای انجام کاری.<br><b>مترادف:</b> قادر بودن.<br>مثال: کودکان <b>می‌توانند</b> سریع بدوند.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Ter a capacidade ou permissão para fazer algo.<br><b>Sinônimo:</b> ser capaz de.<br>Exemplo: As crianças <b>podem</b> correr rápido.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Mieć zdolność lub pozwolenie na zrobienie czegoś.<br><b>Synonim:</b> potrafić.<br>Przykład: Dzieci <b>mogą</b> szybko biegać.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: A avea capacitatea sau permisiunea de a face ceva.<br><b>Sinonim:</b> a fi capabil.<br>Exemplu: Copiii <b>pot</b> alerga repede.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Иметь способность или разрешение что-то сделать.<br><b>Синоним:</b> уметь.<br>Пример: Дети <b>могут</b> бегать быстро.",
+            "es": "<b>Spænska (Español):</b> Explicación: Tener la habilidad o permiso para hacer algo.<br><b>Sinónimo:</b> ser capaz de.<br>Ejemplo: Los niños <b>pueden</b> correr rápido.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Att ha förmågan eller tillåtelsen att göra något.<br><b>Synonym:</b> klara av.<br>Exempel: Barn <b>kan</b> springa snabbt.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: มีความสามารถหรือได้รับอนุญาตให้ทำบางสิ่ง<br><b>คำพ้องความหมาย:</b> มีความสามารถ<br>ตัวอย่าง: เด็กๆ <b>สามารถ</b>วิ่งได้เร็ว",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Мати здатність або дозвіл щось зробити.<br><b>Синонім:</b> вміти.<br>Приклад: Діти <b>можуть</b> бігати швидко.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Có khả năng hoặc được phép làm điều gì đó.<br><b>Từ đồng nghĩa:</b> có khả năng.<br>Ví dụ: Trẻ em <b>có thể</b> chạy nhanh."
+        }
     },
     { 
         text: "oft", 
-        is_exp: "<b>Útskýring:</b> Atviksorð um tíma. Þýðir að eitthvað gerist mörgum sinnum.<br><b>Dæmi:</b> Við spilum <b>oft</b> fótbolta.",
-        translations: "<b>Enska (English):</b> Explanation: Adverb of time meaning 'often'. Example: We <b>often</b> play football.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Przysłówek czasu 'często'. Przykład: <b>Często</b> gramy w piłkę nożną.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Adverbio de tiempo que significa 'a menudo'. Ejemplo: Jugamos al fútbol <b>a menudo</b>.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Trạng từ chỉ thời gian 'thường xuyên'. Ví dụ: Chúng tôi <b>thường</b> chơi bóng đá.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: ظرف زمان يعني 'غالباً' أو 'كثيراً ما'. مثال: نحن نلعب كرة القدم <b>غالباً</b>.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Наречие времени 'часто'. Пример: Мы <b>часто</b> играем в футбол.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Прислівник часу 'часто'. Приклад: Ми <b>часто</b> граємо у футбол.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: قید زمان به معنی «اغلب» یا «بیشتر اوقات». مثال: ما <b>اغلب</b> فوتبال بازی می‌کنیم.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: กริยาวิเศษณ์แปลว่า 'บ่อยๆ'. ตัวอย่าง: พวกเราเล่นฟุตบอล<b>บ่อยๆ</b><br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Advérbio de tempo 'frequentemente'. Exemplo: Nós jogamos futebol <b>frequentemente</b>.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：表示时间的副词，意思是“经常”。 例句：我们<b>经常</b>踢足球。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Apstākļa vārds 'bieži'. Piemērs: Mēs <b>bieži</b> spēlējam futbolu."
+        is_exp: "<b>Útskýring:</b> Atviksorð sem sýnir að eitthvað gerist mörgum sinnum.<br><b>Andheiti:</b> sjaldan, aldrei.<br><b>Dæmi:</b> Við spilum <b>oft</b> fótbolta.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: ظرف زمان يعني حدوث الشيء مرات عديدة.<br><b>مضاد:</b> نادراً، أبداً.<br>مثال: نحن نلعب كرة القدم <b>غالباً</b>.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Biord, der viser at noget sker mange gange.<br><b>Antonym:</b> sjældent, aldrig.<br>Eksempel: Vi spiller <b>ofte</b> fodbold.",
+            "en": "<b>Enska (English):</b> Explanation: Adverb of time showing that something happens many times.<br><b>Antonym:</b> rarely, never.<br>Example: We <b>often</b> play football.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Pang-abay na nagpapakita na ang isang bagay ay madalas mangyari.<br><b>Kasalungat:</b> bihira, hindi kailanman.<br>Halimbawa: <b>Madalas</b> kaming maglaro ng football.",
+            "fr": "<b>Franska (Français):</b> Explication: Adverbe montrant que quelque chose se produit plusieurs fois.<br><b>Antonyme:</b> rarement, jamais.<br>Exemple: Nous jouons <b>souvent</b> au football.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Apstākļa vārds, kas rāda, ka kaut kas notiek daudzas reizes.<br><b>Antonīms:</b> reti, nekad.<br>Piemērs: Mēs <b>bieži</b> spēlējam futbolu.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Prievezmis, rodantis, kad kažkas vyksta daug kartų.<br><b>Antonimas:</b> retai, niekada.<br>Pavyzdys: Mes <b>dažnai</b> žaidžiame futbolą.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Adverb som viser at noe skjer mange ganger.<br><b>Antonym:</b> sjelden, aldri.<br>Eksempel: Vi spiller <b>ofte</b> fotball.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: قید زمانی که نشان می‌دهد چیزی بارها اتفاق می‌افتد.<br><b>متضاد:</b> به ندرت، هرگز.<br>مثال: ما <b>اغلب</b> فوتبال بازی می‌کنیم.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Advérbio mostrando que algo acontece muitas vezes.<br><b>Antônimo:</b> raramente, nunca.<br>Exemplo: Nós <b>frequentemente</b> jogamos futebol.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Przysłówek pokazujący, że coś dzieje się wiele razy.<br><b>Antonim:</b> rzadko, nigdy.<br>Przykład: <b>Często</b> gramy w piłkę nożną.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Adverb care arată că ceva se întâmplă de multe ori.<br><b>Antonim:</b> rar, niciodată.<br>Exemplu: Noi jucăm <b>des</b> fotbal.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Наречие, показывающее, что что-то происходит много раз.<br><b>Антоним:</b> редко, никогда.<br>Пример: Мы <b>часто</b> играем в футбол.",
+            "es": "<b>Spænska (Español):</b> Explicación: Adverbio de tiempo que muestra que algo pasa muchas veces.<br><b>Antónimo:</b> raramente, nunca.<br>Ejemplo: Nosotros jugamos al fútbol <b>a menudo</b>.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Adverb som visar att något händer många gånger.<br><b>Antonym:</b> sällan, aldrig.<br>Exempel: Vi spelar <b>ofta</b> fotboll.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: กริยาวิเศษณ์บอกเวลาที่แสดงว่าเกิดบางสิ่งขึ้นหลายครั้ง<br><b>คำตรงข้าม:</b> นานๆครั้ง, ไม่เคย<br>ตัวอย่าง: พวกเราเล่นฟุตบอล<b>บ่อยๆ</b>",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Прислівник, що показує, що щось відбувається багато разів.<br><b>Антонім:</b> рідко, ніколи.<br>Приклад: Ми <b>часто</b> граємо у футбол.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Trạng từ chỉ thời gian cho thấy điều gì đó xảy ra nhiều lần.<br><b>Từ trái nghĩa:</b> hiếm khi, không bao giờ.<br>Ví dụ: Chúng tôi <b>thường</b> chơi bóng đá."
+        }
     },
     { 
         text: "fólk", 
-        is_exp: "<b>Útskýring:</b> Nafnorð (safnheiti yfir manneskjur). Er alltaf í eintölu á íslensku þótt það þýði margir menn.<br><b>Dæmi:</b> Það er margt <b>fólk</b> úti.",
-        translations: "<b>Enska (English):</b> Explanation: Noun meaning 'people'. Example: There are many <b>people</b> outside.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Rzeczownik oznaczający 'ludzie'. Przykład: Na zewnątrz jest wielu <b>ludzi</b>.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Sustantivo que significa 'gente' o 'personas'. Ejemplo: Hay mucha <b>gente</b> afuera.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Danh từ nghĩa là 'người/mọi người'. Ví dụ: Có rất nhiều <b>người</b> ở ngoài.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: اسم يعني 'الناس'. مثال: هناك الكثير من <b>الناس</b> في الخارج.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Существительное 'люди'. Пример: На улице много <b>людей</b>.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Іменник 'люди'. Приклад: Надворі багато <b>людей</b>.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: اسم جمع به معنی «مردم». مثال: <b>مردم</b> زیادی بیرون هستند.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: คำนามแปลว่า 'ผู้คน'. ตัวอย่าง: มี<b>ผู้คน</b>มากมายอยู่ข้างนอก<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Substantivo que significa 'pessoas' ou 'gente'. Exemplo: Há muitas <b>pessoas</b> lá fora.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：名词，意思是“人们/人”。 例句：外面有很多<b>人</b>。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Lietvārds 'cilvēki' vai 'ļaudis'. Piemērs: Ārā ir daudz <b>cilvēku</b>."
+        is_exp: "<b>Útskýring:</b> Safnheiti yfir manneskjur. Er alltaf í eintölu á íslensku þótt það þýði margir einstaklingar.<br><b>Samheiti:</b> menn, mannfólk.<br><b>Dæmi:</b> Það er margt <b>fólk</b> úti.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: اسم جمع للإشارة إلى البشر.<br><b>مرادف:</b> أناس، بشر.<br>مثال: هناك الكثير من <b>الناس</b> في الخارج.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Samlebetegnelse for mennesker.<br><b>Synonym:</b> mennesker, befolkning.<br>Eksempel: Der er mange <b>mennesker/folk</b> udenfor.",
+            "en": "<b>Enska (English):</b> Explanation: Collective noun for humans/persons.<br><b>Synonym:</b> humans, persons.<br>Example: There are many <b>people</b> outside.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Pangngalang lansak para sa mga tao.<br><b>Kasingkahulugan:</b> mga tao, mamamayan.<br>Halimbawa: Maraming <b>tao</b> sa labas.",
+            "fr": "<b>Franska (Français):</b> Explication: Nom collectif pour les humains.<br><b>Synonyme:</b> humains, personnes.<br>Exemple: Il y a beaucoup de <b>monde (gens)</b> dehors.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Kopuma nosaukums cilvēkiem.<br><b>Sinonīms:</b> cilvēki, ļaudis.<br>Piemērs: Ārā ir daudz <b>cilvēku</b>.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Kuopinis daiktavardis žmonėms.<br><b>Sinonimas:</b> žmonės, asmenys.<br>Pavyzdys: Lauke yra daug <b>žmonių</b>.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Samlebetegnelse for mennesker.<br><b>Synonym:</b> mennesker, personer.<br>Eksempel: Det er mye <b>folk</b> ute.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: اسم جمع برای انسان‌ها.<br><b>مترادف:</b> انسان‌ها، اشخاص.<br>مثال: <b>مردم</b> زیادی بیرون هستند.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Substantivo coletivo para humanos.<br><b>Sinônimo:</b> pessoas, humanos.<br>Exemplo: Há muitas <b>pessoas</b> lá fora.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Rzeczownik zbiorowy dla ludzi.<br><b>Synonim:</b> ludzie, osoby.<br>Przykład: Na zewnątrz jest dużo <b>ludzi</b>.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Substantiv colectiv pentru oameni.<br><b>Sinonim:</b> persoane, oameni.<br>Exemplu: Sunt mulți <b>oameni</b> afară.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Собирательное существительное для людей.<br><b>Синоним:</b> люди, человечество.<br>Пример: На улице много <b>людей</b>.",
+            "es": "<b>Spænska (Español):</b> Explicación: Sustantivo colectivo para humanos.<br><b>Sinónimo:</b> personas, humanos.<br>Ejemplo: Hay muchas <b>personas (gente)</b> afuera.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Samlingsnamn för människor.<br><b>Synonym:</b> människor, personer.<br>Exempel: Det är mycket <b>folk</b> ute.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: คำนามรวมสำหรับมนุษย์<br><b>คำพ้องความหมาย:</b> มนุษย์, บุคคล<br>ตัวอย่าง: มี<b>ผู้คน</b>มากมายอยู่ข้างนอก",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Збірний іменник для людей.<br><b>Синонім:</b> люди, особи.<br>Приклад: Надворі багато <b>людей</b>.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Danh từ tập hợp chỉ con người.<br><b>Từ đồng nghĩa:</b> con người, cá nhân.<br>Ví dụ: Có rất nhiều <b>người</b> ở bên ngoài."
+        }
     },
     { 
         text: "hægt", 
-        is_exp: "<b>Útskýring:</b> Þetta orð getur þýtt tvennt. Það getur þýtt að eitthvað sé <i>mögulegt</i> (er hægt að gera þetta?), en líka andheitið við 'hratt' (að labba hægt). Í þessari setningu þýðir það að eitthvað sé <i>mögulegt</i>.<br><b>Dæmi:</b> Er <b>hægt</b> að opna gluggann?",
-        translations: "<b>Enska (English):</b> Explanation: Means 'possible' or 'slowly'. Here it means possible. Example: Is it <b>possible</b> to open the window?<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Oznacza 'możliwe' lub 'powoli'. Tutaj: możliwe. Przykład: Czy <b>można</b> otworzyć okno?<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Significa 'posible' o 'lentamente'. Aquí significa posible. Ejemplo: ¿Es <b>posible</b> abrir la ventana?<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Có nghĩa là 'có thể' (khả thi) hoặc 'chậm'. Ở đây là khả thi. Ví dụ: <b>Có thể</b> mở cửa sổ không?<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: قد تعني 'ممكن' أو 'ببطء'. هنا تعني ممكن. مثال: هل من <b>الممكن</b> فتح النافذة؟<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Означает 'возможно' или 'медленно'. Здесь: возможно. Пример: <b>Возможно</b> ли открыть окно?<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Означає 'можливо' або 'повільно'. Тут: можливо. Приклад: Чи <b>можливо</b> відкрити вікно?<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: می‌تواند به معنی «ممکن» یا «به آرامی» باشد. در اینجا به معنی ممکن است. مثال: آیا باز کردن پنجره <b>امکان‌پذیر</b> است؟<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: หมายถึง 'เป็นไปได้' หรือ 'ช้าๆ' ที่นี่แปลว่าเป็นไปได้. ตัวอย่าง: <b>เป็นไปได้</b>ไหมที่จะเปิดหน้าต่าง?<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Significa 'possível' ou 'lentamente'. Aqui significa possível. Exemplo: É <b>possível</b> abrir a janela?<br>" +
-                      "<b>Kínverska (中文):</b> 解释：表示“可能”或“缓慢”。这里的句意是可能。 例句：<b>可以</b>（可能）打开窗户吗？<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Var nozīmēt 'iespējams' vai 'lēni'. Šeit nozīmē 'iespējams'. Piemērs: Vai ir <b>iespējams</b> atvērt logu?"
+        is_exp: "<b>Útskýring:</b> Getur þýtt að eitthvað sé mögulegt, eða að gera eitthvað rólega. Hér þýðir það að eitthvað sé mögulegt.<br><b>Samheiti:</b> gerlegt. <b>Andheiti:</b> ómögulegt, hratt.<br><b>Dæmi:</b> Er <b>hægt</b> að opna gluggann?",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: يعني 'ممكن' أو 'ببطء'. هنا تعني ممكن.<br><b>مرادف:</b> ممكن. <b>مضاد:</b> مستحيل، بسرعة.<br>مثال: هل من <b>الممكن</b> فتح النافذة؟</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Kan betyde at noget er muligt, eller at gøre noget langsomt. Her betyder det muligt.<br><b>Synonym:</b> muligt. <b>Antonym:</b> umuligt, hurtigt.<br>Eksempel: Er det <b>muligt</b> at åbne vinduet?",
+            "en": "<b>Enska (English):</b> Explanation: Means 'possible' or 'slowly'. Here it means possible.<br><b>Synonym:</b> possible. <b>Antonym:</b> impossible, fast.<br>Example: Is it <b>possible</b> to open the window?",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Nangangahulugang 'posible' o 'mabagal'. Dito, ibig sabihin ay posible.<br><b>Kasingkahulugan:</b> maaari. <b>Kasalungat:</b> imposible, mabilis.<br>Halimbawa: <b>Posible</b> bang buksan ang bintana?",
+            "fr": "<b>Franska (Français):</b> Explication: Signifie 'possible' ou 'lentement'. Ici, cela signifie possible.<br><b>Synonyme:</b> faisable. <b>Antonyme:</b> impossible, rapide.<br>Exemple: Est-il <b>possible</b> d'ouvrir la fenêtre ?",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Var nozīmēt 'iespējams' vai 'lēni'. Šeit tas nozīmē 'iespējams'.<br><b>Sinonīms:</b> iespējams. <b>Antonīms:</b> neiespējams, ātri.<br>Piemērs: Vai ir <b>iespējams</b> atvērt logu?",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Reiškia 'įmanoma' arba 'lėtai'. Čia tai reiškia įmanoma.<br><b>Sinonimas:</b> galima. <b>Antonimas:</b> neįmanoma, greitai.<br>Pavyzdys: Ar <b>įmanoma</b> atidaryti langą?",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Kan bety at noe er mulig, eller at noe gjøres sakte. Her betyr det mulig.<br><b>Synonym:</b> mulig. <b>Antonym:</b> umulig, raskt.<br>Eksempel: Er det <b>mulig</b> å åpne vinduet?",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: به معنی «ممکن» یا «به آرامی». در اینجا به معنی ممکن است.<br><b>مترادف:</b> امکان‌پذیر. <b>متضاد:</b> غیرممکن، سریع.<br>مثال: آیا باز کردن پنجره <b>ممکن</b> است؟</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Significa 'possível' ou 'lentamente'. Aqui significa possível.<br><b>Sinônimo:</b> possível. <b>Antônimo:</b> impossível, rápido.<br>Exemplo: É <b>possível</b> abrir a janela?",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Oznacza 'możliwe' lub 'powoli'. Tutaj: możliwe.<br><b>Synonim:</b> wykonalne. <b>Antonim:</b> niemożliwe, szybko.<br>Przykład: Czy <b>możliwe</b> jest otwarcie okna?",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Înseamnă 'posibil' sau 'încet'. Aici înseamnă posibil.<br><b>Sinonim:</b> realizabil. <b>Antonim:</b> imposibil, rapid.<br>Exemplu: Este <b>posibil</b> să deschidem fereastra?",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Означает 'возможно' или 'медленно'. Здесь: возможно.<br><b>Синоним:</b> возможно. <b>Антоним:</b> невозможно, быстро.<br>Пример: <b>Возможно</b> ли открыть окно?",
+            "es": "<b>Spænska (Español):</b> Explicación: Significa 'posible' o 'lentamente'. Aquí significa posible.<br><b>Sinónimo:</b> factible. <b>Antónimo:</b> imposible, rápido.<br>Ejemplo: ¿Es <b>posible</b> abrir la ventana?",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Kan betyda att något är möjligt, eller att göra något långsamt. Här betyder det möjligt.<br><b>Synonym:</b> genomförbart. <b>Antonym:</b> omöjligt, snabbt.<br>Exempel: Är det <b>möjligt</b> att öppna fönstret?",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: หมายถึง 'เป็นไปได้' หรือ 'ช้าๆ' ที่นี่หมายถึงเป็นไปได้<br><b>คำพ้องความหมาย:</b> เป็นไปได้ <b>คำตรงข้าม:</b> เป็นไปไม่ได้, เร็ว<br>ตัวอย่าง: <b>เป็นไปได้</b>ไหมที่จะเปิดหน้าต่าง?",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Означає 'можливо' або 'повільно'. Тут: можливо.<br><b>Синонім:</b> можливо. <b>Антонім:</b> неможливо, швидко.<br>Приклад: Чи <b>можливо</b> відкрити вікно?",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Có nghĩa là 'khả thi' hoặc 'chậm'. Ở đây có nghĩa là khả thi.<br><b>Từ đồng nghĩa:</b> có thể. <b>Từ trái nghĩa:</b> bất khả thi, nhanh.<br>Ví dụ: Việc mở cửa sổ có <b>khả thi</b> không?"
+        }
     },
     { 
         text: "mér", 
-        is_exp: "<b>Útskýring:</b> Persónufornafnið „ég“ í þágufalli. Notað eftir ákveðin sagnorð (t.d. að rétta einhverjum, hjálpa einhverjum).<br><b>Dæmi:</b> Viltu rétta <b>mér</b> bókina?",
-        translations: "<b>Enska (English):</b> Explanation: The pronoun 'me' in dative case (to me). Example: Can you pass <b>me</b> the book?<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Zaimek 'ja' w celowniku (mi / mnie). Przykład: Czy możesz podać <b>mi</b> książkę?<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Pronombre 'yo' en caso dativo (me / a mí). Ejemplo: ¿Puedes pasar<b>me</b> el libro?<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Đại từ 'tôi' ở cách tặng (cho tôi). Ví dụ: Bạn có thể đưa <b>cho tôi</b> cuốn sách không?<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: ضمير 'أنا' في حالة الجر (لي / إليّ). مثال: هل يمكنك أن تناولـ<b>ـني</b> الكتاب؟<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Местоимение 'я' в дательном падеже (мне). Пример: Можешь передать <b>мне</b> книгу?<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Займенник 'я' у давальному відмінку (мені). Приклад: Можеш передати <b>мені</b> книгу?<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: ضمیر «من» در حالت مفعولی (به من). مثال: می‌توانی کتاب را <b>به من</b> بدهی؟<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: สรรพนาม 'ฉัน' (ให้ฉัน). ตัวอย่าง: คุณช่วยส่งหนังสือ<b>ให้ฉัน</b>ได้ไหม?<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: O pronome 'eu' no caso dativo (me / para mim). Exemplo: Pode <b>me</b> passar o livro?<br>" +
-                      "<b>Kínverska (中文):</b> 解释：代词“我”的宾格形式（给我）。 例句：能把书递<b>给我</b>吗？<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Vietniekvārds 'es' datīvā (man). Piemērs: Vai vari padot <b>man</b> grāmatu?"
+        is_exp: "<b>Útskýring:</b> Persónufornafn (ég) í þágufalli. Notað eftir ákveðin sagnorð.<br><b>Samheiti:</b> mig (í þolfalli).<br><b>Dæmi:</b> Viltu rétta <b>mér</b> bókina?",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: ضمير (أنا) في حالة الجر (لي).<br><b>مرادف:</b> إياي (في حالة النصب).<br>مثال: هل يمكنك أن تناولـ<b>ـني</b> الكتاب؟</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Pronomen (jeg) i dativ. Bruges efter bestemte udsagnsord.<br><b>Synonym:</b> mig.<br>Eksempel: Vil du række <b>mig</b> bogen?",
+            "en": "<b>Enska (English):</b> Explanation: Pronoun (I) in the dative case (to me).<br><b>Synonym:</b> me.<br>Example: Can you pass <b>me</b> the book?",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Panghalip (ako) sa dative case.<br><b>Kasingkahulugan:</b> sa akin.<br>Halimbawa: Maaari mo bang iabot <b>sa akin</b> ang libro?",
+            "fr": "<b>Franska (Français):</b> Explication: Pronom (je) au datif (me/à moi).<br><b>Synonyme:</b> moi.<br>Exemple: Peux-tu <b>me</b> passer le livre ?",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Vietniekvārds (es) datīvā (man).<br><b>Sinonīms:</b> mani.<br>Piemērs: Vai vari padot <b>man</b> grāmatu?",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Įvardis (aš) naudininko linksnyje (man).<br><b>Sinonimas:</b> mane.<br>Pavyzdys: Ar gali paduoti <b>man</b> knygą?",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Pronomen (jeg) i dativ.<br><b>Synonym:</b> meg.<br>Eksempel: Vil du rekke <b>meg</b> boken?",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: ضمیر (من) در حالت مفعولی.<br><b>مترادف:</b> مرا.<br>مثال: می‌توانی کتاب را <b>به من</b> بدهی؟</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Pronome (eu) no caso dativo (me/para mim).<br><b>Sinônimo:</b> mim.<br>Exemplo: Você pode <b>me</b> passar o livro?",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Zaimek (ja) w celowniku.<br><b>Synonim:</b> mnie.<br>Przykład: Czy możesz podać <b>mi</b> książkę?",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Pronume (eu) în cazul dativ.<br><b>Sinonim:</b> pe mine.<br>Exemplu: Poți să-<b>mi</b> dai cartea?",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Местоимение (я) в дательном падеже (мне).<br><b>Синоним:</b> меня.<br>Пример: Можешь передать <b>мне</b> книгу?",
+            "es": "<b>Spænska (Español):</b> Explicación: Pronombre (yo) en caso dativo (me / a mí).<br><b>Sinónimo:</b> mí.<br>Ejemplo: ¿Puedes pasar<b>me</b> el libro?",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Pronomen (jag) i dativ.<br><b>Synonym:</b> mig.<br>Exempel: Kan du räcka <b>mig</b> boken?",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: สรรพนาม (ฉัน) ในรูปกรรม (ให้ฉัน)<br><b>คำพ้องความหมาย:</b> ฉัน<br>ตัวอย่าง: คุณช่วยส่งหนังสือ<b>ให้ฉัน</b>หน่อยได้ไหม?",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Займенник (я) у давальному відмінку (мені).<br><b>Синонім:</b> мене.<br>Приклад: Можеш передати <b>мені</b> книгу?",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Đại từ (tôi) ở cách tặng (cho tôi).<br><b>Từ đồng nghĩa:</b> tôi.<br>Ví dụ: Bạn có thể đưa <b>cho tôi</b> cuốn sách không?"
+        }
     },
     { 
         text: "milli", 
-        is_exp: "<b>Útskýring:</b> Forsetning sem lýsir staðsetningu þar sem eitthvað er umkringt eða í miðjunni af tveimur eða fleiri hlutum.<br><b>Dæmi:</b> Kötturinn sefur á <b>milli</b> stólanna.",
-        translations: "<b>Enska (English):</b> Explanation: Preposition meaning 'between' or 'among'. Example: The cat sleeps <b>between</b> the chairs.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Przyimek oznaczający 'między'. Przykład: Kot śpi <b>między</b> krzesłami.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Preposición que significa 'entre'. Ejemplo: El gato duerme <b>entre</b> las sillas.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Giới từ nghĩa là 'ở giữa'. Ví dụ: Con mèo ngủ <b>giữa</b> những chiếc ghế.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: حرف جر يعني 'بين'. مثال: القط ينام <b>بين</b> الكراسي.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Предлог 'между'. Пример: Кот спит <b>между</b> стульями.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Прийменник 'між'. Приклад: Кіт спить <b>між</b> стільцями.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: حرف اضافه به معنی «بین» یا «میان». مثال: گربه <b>بین</b> صندلی‌ها می‌خوابد.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: บุพบทแปลว่า 'ระหว่าง' หรือ 'ตรงกลาง'. ตัวอย่าง: แมวนอนอยู่<b>ระหว่าง</b>เก้าอี้<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Preposição que significa 'entre'. Exemplo: O gato dorme <b>entre</b> as cadeiras.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：介词，意思是“在...之间”。 例句：猫在椅子<b>之间</b>睡觉。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Prievārds, kas nozīmē 'starp'. Piemērs: Kaķis guļ <b>starp</b> krēsliem."
+        is_exp: "<b>Útskýring:</b> Forsetning sem segir að eitthvað sé í miðjunni af tveimur eða fleiri hlutum.<br><b>Samheiti:</b> á milli, í miðið.<br><b>Dæmi:</b> Kötturinn sefur á <b>milli</b> stólanna.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: حرف جر يعني 'بين' شيئين أو أكثر.<br><b>مرادف:</b> في الوسط.<br>مثال: القط ينام <b>بين</b> الكراسي.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Forholdsord, der angiver at noget er i midten af to eller flere ting.<br><b>Synonym:</b> imellem.<br>Eksempel: Katten sover <b>imellem</b> stolene.",
+            "en": "<b>Enska (English):</b> Explanation: Preposition meaning in the middle of two or more things.<br><b>Synonym:</b> between, among.<br>Example: The cat sleeps <b>between</b> the chairs.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Pang-ukol na nangangahulugang nasa gitna ng dalawa o higit pang bagay.<br><b>Kasingkahulugan:</b> sa pagitan.<br>Halimbawa: Ang pusa ay natutulog <b>sa pagitan</b> ng mga upuan.",
+            "fr": "<b>Franska (Français):</b> Explication: Préposition signifiant au milieu de deux ou plusieurs choses.<br><b>Synonyme:</b> entre, parmi.<br>Exemple: Le chat dort <b>entre</b> les chaises.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Prievārds, kas nozīmē vidū starp divām vai vairāk lietām.<br><b>Sinonīms:</b> starpā.<br>Piemērs: Kaķis guļ <b>starp</b> krēsliem.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Prielinksnis, reiškiantis viduryje tarp dviejų ar daugiau dalykų.<br><b>Sinonimas:</b> tarpe.<br>Pavyzdys: Katė miega <b>tarp</b> kėdžių.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Preposisjon som betyr i midten av to eller flere ting.<br><b>Synonym:</b> imellom.<br>Eksempel: Katten sover <b>mellom</b> stolene.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: حرف اضافه‌ای که به معنی در میان دو یا چند چیز است.<br><b>مترادف:</b> در میان.<br>مثال: گربه <b>بین</b> صندلی‌ها می‌خوابد.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Preposição que significa no meio de duas ou mais coisas.<br><b>Sinônimo:</b> entre.<br>Exemplo: O gato dorme <b>entre</b> as cadeiras.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Przyimek oznaczający 'w środku' między dwiema lub wieloma rzeczami.<br><b>Synonim:</b> pośrodku.<br>Przykład: Kot śpi <b>między</b> krzesłami.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Prepoziție care înseamnă în mijlocul a două sau mai multe lucruri.<br><b>Sinonim:</b> între.<br>Exemplu: Pisica doarme <b>între</b> scaune.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Предлог, означающий 'посередине' двух или более предметов.<br><b>Синоним:</b> между.<br>Пример: Кот спит <b>между</b> стульями.",
+            "es": "<b>Spænska (Español):</b> Explicación: Preposición que significa en medio de dos o más cosas.<br><b>Sinónimo:</b> entre, en medio.<br>Ejemplo: El gato duerme <b>entre</b> las sillas.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Preposition som betyder i mitten av två eller flera saker.<br><b>Synonym:</b> emellan.<br>Exempel: Katten sover <b>mellan</b> stolarna.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: บุพบทที่หมายถึงอยู่ตรงกลางของสองสิ่งหรือมากกว่า<br><b>คำพ้องความหมาย:</b> ระหว่าง<br>ตัวอย่าง: แมวนอนอยู่<b>ระหว่าง</b>เก้าอี้",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Прийменник, що означає посередині двох або більше предметів.<br><b>Синонім:</b> поміж.<br>Приклад: Кіт спить <b>між</b> стільцями.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Giới từ có nghĩa là ở giữa hai hoặc nhiều thứ.<br><b>Từ đồng nghĩa:</b> ở giữa.<br>Ví dụ: Con mèo ngủ <b>giữa</b> những chiếc ghế."
+        }
     },
     { 
         text: "þó", 
-        is_exp: "<b>Útskýring:</b> Tengiorð (eða atviksorð) sem gefur til kynna andstæðu (getur þýtt „þrátt fyrir að“ eða „samt“).<br><b>Dæmi:</b> Hann mætti <b>þó</b> hann væri seinn.",
-        translations: "<b>Enska (English):</b> Explanation: Conjunction/adverb meaning 'even though', 'although' or 'yet'. Example: He showed up <b>even though</b> he was late.<br>" +
-                      "<b>Pólska (Polski):</b> Objaśnienie: Spójnik oznaczający 'chociaż' lub 'mimo że'. Przykład: Przyszedł, <b>chociaż</b> był spóźniony.<br>" +
-                      "<b>Spænska (Español):</b> Explicación: Conjunción que significa 'aunque'. Ejemplo: Apareció, <b>aunque</b> llegó tarde.<br>" +
-                      "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Từ nối nghĩa là 'mặc dù'. Ví dụ: Anh ấy đã đến <b>mặc dù</b> đến muộn.<br>" +
-                      "<b>Arabíska (العربية):</b> الشرح: رابط يعني 'على الرغم من' أو 'رغم أن'. مثال: لقد حضر <b>على الرغم من</b> تأخره.<br>" +
-                      "<b>Rússneska (Русский):</b> Объяснение: Союз 'хотя' или 'несмотря на'. Пример: Он пришел, <b>хотя</b> и опоздал.<br>" +
-                      "<b>Úkraínska (Українська):</b> Пояснення: Сполучник 'хоча'. Приклад: Він прийшов, <b>хоча</b> й запізнився.<br>" +
-                      "<b>Persneska (فارسی):</b> توضیح: حرف ربط به معنی «اگرچه» یا «با وجود اینکه». مثال: او آمد <b>اگرچه</b> دیر کرده بود.<br>" +
-                      "<b>Tælenska (ไทย):</b> คำอธิบาย: คำสันธานแปลว่า 'แม้ว่า'. ตัวอย่าง: เขามา<b>แม้ว่า</b>จะสายก็ตาม<br>" +
-                      "<b>Portúgalska (Português):</b> Explicativo: Conjunção que significa 'embora' ou 'apesar de'. Exemplo: Ele apareceu, <b>embora</b> estivesse atrasado.<br>" +
-                      "<b>Kínverska (中文):</b> 解释：连词，意思是“尽管”或“虽然”。 例句：<b>尽管</b>他迟到了，他还是来了。<br>" +
-                      "<b>Lettneska (Latviešu):</b> Paskaidrojums: Saiklis 'lai gan'. Piemērs: Viņš ieradās, <b>lai gan</b> kavējās."
+        is_exp: "<b>Útskýring:</b> Tengiorð eða atviksorð sem gefur til kynna andstæðu eða eitthvað óvænt.<br><b>Samheiti:</b> þrátt fyrir, samt.<br><b>Dæmi:</b> Hann mætti <b>þó</b> hann væri seinn.",
+        translations: {
+            "ar": "<div dir='rtl' style='text-align: right;'><b>Arabíska (العربية):</b> الشرح: رابط أو ظرف يدل على التناقض أو شيء غير متوقع.<br><b>مرادف:</b> بالرغم من.<br>مثال: لقد حضر <b>على الرغم من</b> تأخره.</div>",
+            "da": "<b>Danska (Dansk):</b> Forklaring: Bindeord eller biord, der angiver en modsætning eller noget uventet.<br><b>Synonym:</b> selvom, trods alt.<br>Eksempel: Han mødte op, <b>selvom</b> han var forsinket.",
+            "en": "<b>Enska (English):</b> Explanation: Conjunction/adverb indicating contrast or something unexpected.<br><b>Synonym:</b> even though, nevertheless.<br>Example: He showed up <b>even though</b> he was late.",
+            "tl": "<b>Filippseyska (Tagalog):</b> Paliwanag: Pangatnig/pang-abay na nagpapahiwatig ng salungatan o hindi inaasahan.<br><b>Kasingkahulugan:</b> kahit na.<br>Halimbawa: Dumating siya <b>kahit na</b> huli na siya.",
+            "fr": "<b>Franska (Français):</b> Explication: Conjonction/adverbe indiquant un contraste ou quelque chose d'inattendu.<br><b>Synonyme:</b> bien que, cependant.<br>Exemple: Il est venu <b>bien qu'</b>il soit en retard.",
+            "lv": "<b>Lettneska (Latviešu):</b> Paskaidrojums: Saiklis/apstākļa vārds, kas norāda uz kontrastu vai kaut ko negaidītu.<br><b>Sinonīms:</b> lai gan, tomēr.<br>Piemērs: Viņš ieradās, <b>lai gan</b> kavējās.",
+            "lt": "<b>Litháíska (Lietuvių):</b> Paaiškinimas: Jungtukas/prievezmis, nurodantis kontrastą arba kažką netikėto.<br><b>Sinonimas:</b> nors, vis dėlto.<br>Pavyzdys: Jis atvyko, <b>nors</b> ir vėlavo.",
+            "no": "<b>Norska (Norsk):</b> Forklaring: Konjunksjon eller adverb som angir en motsetning eller noe uventet.<br><b>Synonym:</b> selv om, likevel.<br>Eksempel: Han møtte opp <b>selv om</b> han var sen.",
+            "fa": "<div dir='rtl' style='text-align: right;'><b>Persneska (فارسی):</b> توضیح: حرف ربط/قید که نشان‌دهنده تضاد یا چیزی غیرمنتظره است.<br><b>مترادف:</b> با وجود اینکه.<br>مثال: او آمد <b>اگرچه</b> دیر کرده بود.</div>",
+            "pt": "<b>Portúgalska (Português):</b> Explicação: Conjunção/advérbio indicando contraste ou algo inesperado.<br><b>Sinônimo:</b> embora, apesar de.<br>Exemplo: Ele apareceu <b>embora</b> estivesse atrasado.",
+            "pl": "<b>Pólska (Polski):</b> Wyjaśnienie: Spójnik/przysłówek wskazujący na kontrast lub coś nieoczekiwanego.<br><b>Synonim:</b> chociaż, jednak.<br>Przykład: Przyszedł, <b>chociaż</b> był spóźniony.",
+            "ro": "<b>Rúmenska (Română):</b> Explicație: Conjuncție/adverb care indică un contrast sau ceva neașteptat.<br><b>Sinonim:</b> deși, cu toate acestea.<br>Exemplu: A apărut <b>deși</b> era în întârziere.",
+            "ru": "<b>Rússneska (Русский):</b> Объяснение: Союз/наречие, указывающее на контраст или что-то неожиданное.<br><b>Синоним:</b> хотя, несмотря на.<br>Пример: Он пришел, <b>хотя</b> и опоздал.",
+            "es": "<b>Spænska (Español):</b> Explicación: Conjunción/adverbio que indica contraste o algo inesperado.<br><b>Sinónimo:</b> aunque, sin embargo.<br>Ejemplo: Él apareció <b>aunque</b> llegó tarde.",
+            "sv": "<b>Sænska (Svenska):</b> Förklaring: Konjunktion eller adverb som anger en motsats eller något oväntat.<br><b>Synonym:</b> fastän, ändå.<br>Exempel: Han dök upp <b>fastän</b> han var sen.",
+            "th": "<b>Tælenska (ภาษาไทย):</b> คำอธิบาย: สันธาน/กริยาวิเศษณ์บ่งชี้ความขัดแย้งหรือสิ่งที่ไม่คาดคิด<br><b>คำพ้องความหมาย:</b> แม้ว่า, แต่อย่างไรก็ตาม<br>ตัวอย่าง: เขาปรากฏตัว<b>แม้ว่า</b>จะมาสาย",
+            "uk": "<b>Úkraínska (Українська):</b> Пояснення: Сполучник/прислівник, що вказує на контраст або щось несподіване.<br><b>Синонім:</b> хоча, незважаючи на.<br>Приклад: Він прийшов, <b>хоча</b> й запізнився.",
+            "vi": "<b>Víetnamska (Tiếng Việt):</b> Giải thích: Từ nối/trạng từ chỉ sự tương phản hoặc điều gì đó bất ngờ.<br><b>Từ đồng nghĩa:</b> mặc dù, tuy nhiên.<br>Ví dụ: Anh ấy đã xuất hiện <b>mặc dù</b> đến muộn."
+        }
     }
 ];
 
@@ -329,6 +474,7 @@ let currentIndex = 0;
 let recognition;
 let isRecording = false;
 let autoAdvanceTimer = null;
+let hasDownloadedCert = false;
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (SpeechRecognition) {
@@ -337,7 +483,6 @@ if (SpeechRecognition) {
     recognition.continuous = false;
     recognition.interimResults = false;
     
-    // Slökkt sjálfkrafa þegar talningu eða þögn er lokið
     recognition.onend = () => {
         isRecording = false;
         const btn = document.getElementById('record-btn');
@@ -346,7 +491,6 @@ if (SpeechRecognition) {
             btn.classList.remove('recording');
         }
         
-        // Hreinsa stöðutexta ef ekkert orð fannst
         const resDiv = document.getElementById('result');
         if (resDiv && resDiv.innerText === "Hlusta...") {
             resDiv.innerText = "";
@@ -368,7 +512,11 @@ function updateProgress() {
         }
     }
     const percent = (correctCount / exerciseData.length) * 100;
-    document.getElementById('progress-bar').style.width = percent + '%';
+    
+    const progressBar = document.getElementById('progress-bar');
+    if(progressBar) {
+        progressBar.style.width = percent + '%';
+    }
     return correctCount;
 }
 
@@ -379,9 +527,35 @@ function findNextUnfinished() {
             break;
         }
     }
+    
     document.getElementById('app').innerHTML = `
-        <h1>Æfing 71 - 80 algengustu orðin í íslenskum námsbókum</h1>
+        <h1>Markorð 71 - 80</h1>
         <div class="progress-container"><div id="progress-bar"></div></div>
+        
+        <div class="lang-selector">
+            <label for="languageSelect"><b>🌍 Veldu tungumál:</b></label>
+            <select id="languageSelect" onchange="updateUI()">
+                <option value="ar">Arabíska – العربية</option>
+                <option value="da">Danska – Dansk</option>
+                <option value="en" selected>Enska – English</option>
+                <option value="tl">Filippseyska – Tagalog / Filipino</option>
+                <option value="fr">Franska – Français</option>
+                <option value="lv">Lettneska – Latviešu</option>
+                <option value="lt">Litháíska – Lietuvių</option>
+                <option value="no">Norska – Norsk</option>
+                <option value="fa">Persneska – فارسی</option>
+                <option value="pt">Portúgalska – Português</option>
+                <option value="pl">Pólska – Polski</option>
+                <option value="ro">Rúmenska – Română</option>
+                <option value="ru">Rússneska – Русский</option>
+                <option value="es">Spænska – Español</option>
+                <option value="sv">Sænska – Svenska</option>
+                <option value="th">Tælenska – ภาษาไทย</option>
+                <option value="uk">Úkraínska – Українська</option>
+                <option value="vi">Víetnamska – Tiếng Việt</option>
+            </select>
+        </div>
+
         <div id="counter"></div>
         <div id="target"></div>
         <div id="is-explanation"></div>
@@ -393,6 +567,9 @@ function findNextUnfinished() {
         <div class="nav-btns">
             <button class="btn" style="background-color: #5f6368;" onclick="prevExercise()">⬅️ Fyrri</button>
             <button class="btn" style="background-color: #5f6368;" onclick="nextExercise()">Næsta ➡️</button>
+        </div>
+        <div class="feedback-note">
+            Vinsamlegast sendið ábendingar á <a href="mailto:dgu@fb.is">dgu@fb.is</a>
         </div>
     `;
     updateUI();
@@ -408,10 +585,15 @@ function updateUI() {
                 <div class="progress-container"><div id="progress-bar" style="width: 100%;"></div></div>
                 <h1 style="color: #34a853; font-size: 2.5em;">Frábært! Þú náðir 100% árangri! 🎉</h1>
                 <p style="font-size: 1.2em; color: #555;">Skrifaðu nafnið þitt hér að neðan til að sækja viðurkenningarskjalið þitt.</p>
-                <input type="text" id="studentName" placeholder="Skrifaðu nafnið þitt hér" autocomplete="off"><br>
-                <button id="cert-btn" class="btn" style="background-color: #1a73e8; font-size: 1.5em; padding: 15px 30px; margin-top: 10px;" onclick="downloadCert()">🏆 Sækja viðurkenningarskjal</button>
+                <input type="text" id="studentName" placeholder="Skrifaðu nafnið þitt hér" autocomplete="off" ${hasDownloadedCert ? 'disabled' : ''}><br>
+                <button id="cert-btn" class="btn" style="background-color: ${hasDownloadedCert ? '#5f6368' : '#1a73e8'}; font-size: 1.5em; padding: 15px 30px; margin-top: 10px; cursor: ${hasDownloadedCert ? 'not-allowed' : 'pointer'}; opacity: ${hasDownloadedCert ? '0.7' : '1'};" onclick="downloadCert()" ${hasDownloadedCert ? 'disabled' : ''}>
+                    ${hasDownloadedCert ? '✅ Skjal sótt' : '🏆 Sækja viðurkenningarskjal'}
+                </button>
                 <br><br>
-                <button class="btn" style="background-color: #5f6368;" onclick="location.reload()">🔄 Byrja aftur</button>
+                <button class="btn" style="background-color: #5f6368;" onclick="location.reload()">🔄 Byrja nýja umferð</button>
+                <div class="feedback-note">
+                    Vinsamlegast sendið ábendingar á <a href="mailto:dgu@fb.is">dgu@fb.is</a>
+                </div>
             `;
         } else {
             document.getElementById('app').innerHTML = `
@@ -420,16 +602,24 @@ function updateUI() {
                 <p style="font-size: 1.2em;">Þú hefur klárað ${correctCount} af ${exerciseData.length} orðum með 100% árangri.</p>
                 <p style="font-size: 1.1em; color: #555;">Farðu til baka og reyndu aftur við þau orð sem vantaði upp á til að fá skjalið.</p>
                 <button class="btn" style="background-color: #fbbc05; color: #000;" onclick="findNextUnfinished()">➡️ Fara á orð sem vantar</button>
+                <div class="feedback-note">
+                    Vinsamlegast sendið ábendingar á <a href="mailto:dgu@fb.is">dgu@fb.is</a>
+                </div>
             `;
         }
         return;
     }
 
     const curr = exerciseData[currentIndex];
+    
+    const langSelect = document.getElementById('languageSelect');
+    const selectedLang = langSelect ? langSelect.value : 'en';
+
     document.getElementById('target').innerHTML = curr.text;
     document.getElementById('is-explanation').innerHTML = curr.is_exp;
     document.getElementById('counter').innerText = `Orð ${currentIndex + 1} af ${exerciseData.length}`;
-    document.getElementById('media-box').innerHTML = curr.translations;
+    
+    document.getElementById('media-box').innerHTML = curr.translations[selectedLang] || "Þýðing ekki til / Translation missing";
 
     const savedScore = userScores[currentIndex];
     const savedText = userSpoken[currentIndex];
@@ -500,12 +690,14 @@ if (recognition) {
         if (score === 100) {
             autoAdvanceTimer = setTimeout(() => {
                 nextExercise();
-            }, 1000); // 1 sekúndu bið
+            }, 1000); 
         }
     };
 }
 
 function downloadCert() {
+    if (hasDownloadedCert) return; 
+
     const studentNameInput = document.getElementById('studentName');
     const studentName = studentNameInput ? studentNameInput.value.trim() : "";
     
@@ -549,7 +741,7 @@ function downloadCert() {
 
     ctx.fillStyle = '#1a73e8';
     ctx.font = 'bold 26px Arial';
-    ctx.fillText('Æfing 71 - 80 algengustu orðin í íslenskum námsbókum', canvas.width / 2, 420);
+    ctx.fillText('Markorð 71 - 80', canvas.width / 2, 420);
     
     ctx.fillStyle = '#34a853';
     ctx.font = 'italic 28px Arial';
@@ -565,7 +757,7 @@ function downloadCert() {
     link.href = canvas.toDataURL('image/png');
     link.click();
     
-    // Slekkur á takkanum til að koma í veg fyrir mörg skjöl
+    hasDownloadedCert = true;
     const btn = document.getElementById('cert-btn');
     if (btn) {
         btn.disabled = true;
@@ -573,6 +765,9 @@ function downloadCert() {
         btn.style.backgroundColor = "#5f6368";
         btn.style.cursor = "not-allowed";
         btn.style.opacity = "0.7";
+    }
+    if (studentNameInput) {
+        studentNameInput.disabled = true;
     }
 }
 </script>
